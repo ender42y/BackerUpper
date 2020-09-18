@@ -30,10 +30,12 @@ namespace Backer_Upper.Views
         string Path;
         string Folder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backer_Upper_Reports");
         string ReportFile = System.IO.Path.DirectorySeparatorChar + "ErrorReport.txt";
+        Stopwatch stopwatch;
 
         public MainPage()
         {
             Path = Folder + ReportFile;
+            stopwatch = new Stopwatch();
             InitializeComponent();
         }
 
@@ -94,6 +96,7 @@ namespace Backer_Upper.Views
         private void KickOffCopy()
         {
             Timer timer = new Timer();
+            stopwatch.Start();
             timer.Interval = 250;
             timer.Elapsed += TimerTicked;
 
@@ -107,6 +110,8 @@ namespace Backer_Upper.Views
             timer.Start();
             crawler.RunCopy();
             timer.Stop();
+            stopwatch.Stop();
+            stopwatch.Reset();
 
             this.Dispatcher.Invoke(() =>    //sets button to start
             {
@@ -170,7 +175,7 @@ namespace Backer_Upper.Views
 
         private void CancelCrawl(Object source, RoutedEventArgs e)
         {
-            StartBtn.Content = "Canceling";
+            StartBtn.Content = "Stopping";
             StartBtn.IsEnabled = false;
             crawler.SetCanceled(true);
         }
@@ -181,10 +186,17 @@ namespace Backer_Upper.Views
             {
                 double totalBytes = crawler.GetFileSizeTotal();
                 double bytesCopied = crawler.GetBytesCopied();
+                double percent = bytesCopied / totalBytes;
                 int totalFiles = crawler.GetFileCount();
-                int filesCopied = crawler.GetFilesCopied();
+                int filesCopied = crawler.GetFilesCopied() + crawler.GetErrorCount() + crawler.GetPermissionCount();
                 string units = "";
 
+                if(filesCopied > totalFiles)
+                {
+                    Console.WriteLine("Too many Files");
+                }
+
+                //format bytes into appropriate prefix block
                 double formattedBytes;
 
                 if(totalBytes <= 1024)
@@ -211,7 +223,24 @@ namespace Backer_Upper.Views
                     bytesCopied /= 1073741824;
                 }
 
-                ProgressLabel.Text = filesCopied + " Out Of " + totalFiles + " Copied" + System.Environment.NewLine + String.Format("{0:0.##}", bytesCopied) + " " + units + "/" + String.Format("{0:0.##}", formattedBytes) + " " + units;
+
+                //get data out of stopwatch
+                TimeSpan ts = stopwatch.Elapsed;
+                TimeSpan timeToGo;
+                string finishTime = "";
+                if(percent != 0 &&  !Double.IsNaN(percent))
+                {
+                    timeToGo = new TimeSpan(Convert.ToInt64(ts.Ticks/percent));
+                    finishTime = String.Format("{0:00}:{1:00}:{2:00}", timeToGo.Hours, timeToGo.Minutes, timeToGo.Seconds);
+                }
+                else
+                    finishTime = "(Working on Estimation)";
+
+
+                RunTimeLbl.Text = "Elapsed Time: " + String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds)+ System.Environment.NewLine
+                                    +"Estimated Finish Time: " + finishTime;
+                ProgressLabel.Text = filesCopied + " Out Of " + totalFiles + " Copied" + System.Environment.NewLine
+                                    + String.Format("{0:0.##}", bytesCopied) + " " + units + "/" + String.Format("{0:0.##}", formattedBytes) + " " + units;
             });
         }
     }

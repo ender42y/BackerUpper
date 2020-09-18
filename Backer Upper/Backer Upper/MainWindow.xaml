@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Backer_Upper"
         xmlns:views="clr-namespace:Backer_Upper.Views"
         mc:Ignorable="d"
-        Title="Backer Upper" Height="450" Width="800">
+        Title="Backer Upper" Height="560" Width="880">
     <Window.Content>
         <views:MainPage HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Window.Content>
