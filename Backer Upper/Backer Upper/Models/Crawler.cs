@@ -156,7 +156,6 @@ namespace Backer_Upper.Models
 
             int count = 0;
 
-            long fileSize = 0;
 
             while (!Finished  || count != 0)
             {

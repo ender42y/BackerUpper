@@ -123,8 +123,7 @@ namespace Backer_Upper.Views
             });
 
             int errorCount = crawler.GetErrorCount();
-            int permissionCount = crawler.GetPermissionCount();
-            int count = errorCount + permissionCount;
+            int count = errorCount;//might add mroe types of errors later
 
             if (count > 0)
             {
@@ -155,13 +154,6 @@ namespace Backer_Upper.Views
                     writer.WriteLine(s);
                 }
 
-                //write permission errors
-                List<string> permissionFiles = crawler.GetPermissionFiles();
-                foreach (string s in permissionFiles)
-                {
-                    writer.WriteLine(s);
-                }
-
                 writer.Close();
 
 
@@ -188,7 +180,7 @@ namespace Backer_Upper.Views
                 double bytesCopied = crawler.GetBytesCopied();
                 double percent = bytesCopied / totalBytes;
                 int totalFiles = crawler.GetFileCount();
-                int filesCopied = crawler.GetFilesCopied() + crawler.GetErrorCount() + crawler.GetPermissionCount();
+                int filesCopied = crawler.GetFilesCopied() + crawler.GetErrorCount();
                 string units = "";
 
                 if(filesCopied > totalFiles)
