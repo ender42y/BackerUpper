@@ -16,3 +16,12 @@ D:\RedWing\Home\Backer Upper\Backer Upper\obj\Release\Backer_Upper.Properties.Re
 D:\RedWing\Home\Backer Upper\Backer Upper\obj\Release\Backer Upper.csproj.GenerateResource.cache
 D:\RedWing\Home\Backer Upper\Backer Upper\obj\Release\Backer Upper.exe
 D:\RedWing\Home\Backer Upper\Backer Upper\obj\Release\Backer Upper.pdb
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\MainWindow.g.cs
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Views\FilePicker.g.cs
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Views\MainPage.g.cs
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\App.g.cs
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Backer Upper_MarkupCompile.cache
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Backer Upper_MarkupCompile.lref
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Backer Upper.exe
+D:\RedWing\Home\Backer Upper\BackerUpper\Backer Upper\Backer Upper\obj\Release\Backer Upper.pdb
