@@ -15,10 +15,9 @@ namespace Backer_Upper.Models
 
         private int FileCount;
 
-        private List<string> ErrorFiles;
-        private List<string> PermissionFiles;
+        private List<string> ErrorFileNames;
 
-        private List<string> AllFiles;
+        private List<CopyFile> AllFiles;
 
         private double FileTotals;
         private double BytesCopied;
@@ -45,10 +44,9 @@ namespace Backer_Upper.Models
             Mode = mode;
             FileCount = 0;
 
-            AllFiles = new List<string>();
+            AllFiles = new List<CopyFile>();
 
-            ErrorFiles = new List<string>();
-            PermissionFiles = new List<string>();
+            ErrorFileNames = new List<string>();
 
             FileTotals = 0;
             BytesCopied = 0;
@@ -128,45 +126,23 @@ namespace Backer_Upper.Models
             int count = 0;
             lock(ErrorLock)
             {
-                count = ErrorFiles.Count();
+                count = ErrorFileNames.Count();
             }
 
             return count;
         }
-
-        public int GetPermissionCount()
-        {
-            int count = 0;
-            lock (ErrorLock)
-            {
-                count = PermissionFiles.Count();
-            }
-
-            return count;
-        }
-
 
         public List<string> GetErrorFiles()
         {
             List<string> toReturn;
             lock (ErrorLock)
             {
-                toReturn = ErrorFiles;
+                toReturn = ErrorFileNames;
             }
 
             return toReturn;
         }
 
-        public List<string> GetPermissionFiles()
-        {
-            List<string> toReturn;
-            lock (ErrorLock)
-            {
-                toReturn = PermissionFiles;
-            }
-
-            return toReturn;
-        }
 
 
         #endregion
@@ -180,6 +156,7 @@ namespace Backer_Upper.Models
 
             int count = 0;
 
+            long fileSize = 0;
 
             while (!Finished  || count != 0)
             {
@@ -187,50 +164,37 @@ namespace Backer_Upper.Models
                 {
                     return;
                 }
-                string path = "";
+                CopyFile file = new CopyFile();
                 lock (ListLock)
                 {
                     if (AllFiles.Count > 0)
                     {
-                        path = AllFiles[0];
+                        file = AllFiles[0];
                         AllFiles.RemoveAt(0);
                     }
                 }
 
-                if (path != "")
+                if (file != null && file.Name != "")
                 {
                     try
                     {
-                        string newTargetFilePath = path.Replace(RootSource, RootTarget);
+                        string newTargetFilePath = file.Name.Replace(RootSource, RootTarget);
+                        
 
-                        File.Copy(path, newTargetFilePath);
+                        File.Copy(file.Name, newTargetFilePath);
 
                         lock (IOLock)
                         {
                             ++FilesCopied;
-                            BytesCopied += new FileInfo(path).Length;
-                        }
-                    }
-
-                    catch (IOException)
-                    {
-                        lock (ErrorLock)
-                        {
-                            ErrorFiles.Add(path);
-                        }
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        lock (ErrorLock)
-                        {
-                            PermissionFiles.Add(path);
+                            BytesCopied += file.Size;
                         }
                     }
                     catch (Exception)
                     {
                         lock (ErrorLock)
                         {
-                            ErrorFiles.Add(path + " (Unknown Error)");
+                            ErrorFileNames.Add(file.Name);
+                            BytesCopied += file.Size;
                         }
                     }
                 }
@@ -250,9 +214,8 @@ namespace Backer_Upper.Models
         {
             lock (IOLock)
             {
-                AllFiles = new List<string>();
-                ErrorFiles = new List<string>();
-                PermissionFiles = new List<string>();
+                AllFiles = new List<CopyFile>();
+                ErrorFileNames = new List<string>();
 
                 FileCount = 0;
                 FileTotals = 0;
@@ -271,7 +234,7 @@ namespace Backer_Upper.Models
                 return;
             }
 
-            if (RootSource == null || RootSource == "" || RootTarget == null || RootTarget == "")
+            if (RootSource == null || RootSource == "" || RootTarget == null || RootTarget == "" || source.Contains("$RECYCLE.BIN"))//Ignore recycle bin, not worth copying
             {
                 return;
             }
@@ -283,6 +246,7 @@ namespace Backer_Upper.Models
             {
                 try
                 {
+                    //Create Directories that do not exist
                     string newTargetDir = dirs[i].Replace(RootSource, RootTarget);
                     if (!Directory.Exists(newTargetDir))
                     {
@@ -295,25 +259,11 @@ namespace Backer_Upper.Models
                         return;
                     }
                 }
-                catch (IOException)
-                {
-                    lock (ErrorLock)
-                    {
-                        ErrorFiles.Add(dirs[i]);
-                    }
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    lock (ErrorLock)
-                    {
-                        PermissionFiles.Add(dirs[i]);
-                    }
-                }
                 catch (Exception)
                 {
                     lock (ErrorLock)
                     {
-                        ErrorFiles.Add(dirs[i] + " (Unknown Error)");
+                        ErrorFileNames.Add(dirs[i]);
                     }
                 }
             }
@@ -335,7 +285,7 @@ namespace Backer_Upper.Models
                             {
                                 lock (ListLock)
                                 {
-                                    AllFiles.Add(files[i]);
+                                    AllFiles.Add(new CopyFile(files[i], new FileInfo(files[i]).Length));
                                 }
                                 lock (IOLock)
                                 {
@@ -349,7 +299,7 @@ namespace Backer_Upper.Models
                                 {
                                     lock (ListLock)
                                     {
-                                        AllFiles.Add(files[i]);
+                                        AllFiles.Add(new CopyFile(files[i], new FileInfo(files[i]).Length));
                                     }
                                     lock (IOLock)
                                     {
@@ -368,7 +318,7 @@ namespace Backer_Upper.Models
                             }
                                 lock (ListLock)
                             {
-                                AllFiles.Add(files[i]);
+                                AllFiles.Add(new CopyFile(files[i], new FileInfo(files[i]).Length));
                             }
                             lock (IOLock)
                             {
@@ -383,7 +333,7 @@ namespace Backer_Upper.Models
                             {
                                 lock (ListLock)
                                 {
-                                    AllFiles.Add(files[i]);
+                                    AllFiles.Add(new CopyFile(files[i], new FileInfo(files[i]).Length));
                                 }
                                 lock (IOLock)
                                 {
@@ -394,25 +344,11 @@ namespace Backer_Upper.Models
                             break;
                     }
                 }
-                catch (IOException)
-                {
-                    lock (ErrorLock)
-                    {
-                        ErrorFiles.Add(files[i]);
-                    }
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    lock (ErrorLock)
-                    {
-                        PermissionFiles.Add(files[i]);
-                    }
-                }
                 catch (Exception)
                 {
                     lock (ErrorLock)
                     {
-                        ErrorFiles.Add(files[i] + " (Unknown Error)");
+                        ErrorFileNames.Add(files[i]);
                     }
                 }
 
