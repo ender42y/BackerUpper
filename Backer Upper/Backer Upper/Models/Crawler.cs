@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Backer_Upper.Models
 {
@@ -228,7 +229,8 @@ namespace Backer_Upper.Models
 
         public void Crawl(string source)
         {
-            if(CheckCanceled())
+
+            if (CheckCanceled())
             {
                 return;
             }
@@ -238,6 +240,23 @@ namespace Backer_Upper.Models
                 return;
             }
 
+
+
+            //check space needed and space available on target drive
+            string driveLetter = Path.GetPathRoot(RootTarget);
+            driveLetter = driveLetter.Remove(1);
+            //warn user if not able to proceed
+            DriveInfo[] drives = DriveInfo.GetDrives();
+            double volumeFree = 0;
+            foreach (DriveInfo drive in drives)
+            {
+                if (drive.VolumeLabel.Contains(driveLetter))
+                {
+                    volumeFree = drive.AvailableFreeSpace;
+                }
+            }
+
+            //create folders needed
             string[] dirs = Directory.GetDirectories(source);
 
 
@@ -267,6 +286,8 @@ namespace Backer_Upper.Models
                 }
             }
 
+
+            //crawl folders to get list and size to be copied
             string[] files = Directory.GetFiles(source);
 
             for (int i = 0; i < files.Length; ++i)
@@ -290,6 +311,11 @@ namespace Backer_Upper.Models
                                 {
                                     FileTotals += new FileInfo(files[i]).Length;
                                     FileCount++;
+                                    if(FileTotals > volumeFree)
+                                    {
+                                        Canceled = true;
+                                        MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                    }
                                 }
                             }
                             else
@@ -304,6 +330,11 @@ namespace Backer_Upper.Models
                                     {
                                         FileTotals += new FileInfo(files[i]).Length;
                                         FileCount++;
+                                        if (FileTotals > volumeFree)
+                                        {
+                                            Canceled = true;
+                                            MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                        }
                                     }
                                 }
                             }
@@ -315,7 +346,7 @@ namespace Backer_Upper.Models
                             {
                                 File.Delete(newTargetFilePath);
                             }
-                                lock (ListLock)
+                            lock (ListLock)
                             {
                                 AllFiles.Add(new CopyFile(files[i], new FileInfo(files[i]).Length));
                             }
@@ -323,6 +354,11 @@ namespace Backer_Upper.Models
                             {
                                 FileTotals += new FileInfo(files[i]).Length;
                                 FileCount++;
+                                if (FileTotals > volumeFree)
+                                {
+                                    Canceled = true;
+                                    MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                }
                             }
                             break;
 
@@ -338,6 +374,11 @@ namespace Backer_Upper.Models
                                 {
                                     FileTotals += new FileInfo(files[i]).Length;
                                     FileCount++;
+                                    if (FileTotals > volumeFree)
+                                    {
+                                        Canceled = true;
+                                        MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                    }
                                 }
                             }
                             break;
@@ -352,6 +393,13 @@ namespace Backer_Upper.Models
                 }
 
             }
+
+            //create thread pool
+
+            //begin copying en mass 
+
+
+
 
         }
 
