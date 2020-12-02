@@ -1,0 +1,44 @@
+﻿<Page x:Class="Backer_Upper.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Backer_Upper.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="560" d:DesignWidth="880"
+      Title="MainPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="Select The Folder You Want To Back Up" Padding="10" FontSize="18"/>
+            <local:FilePicker HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="SourcePicker"/>
+        </StackPanel>
+
+        <StackPanel  Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="Select Where You Want It Backed Up To" Padding="10" FontSize="18"/>
+            <local:FilePicker HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="TargetPicker"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+            <RadioButton GroupName="OverrideOptions" Name="UpdateBtn" Content="Copy New and Replace Changed" IsChecked="True" Margin="5" FontSize="14"/>
+            <RadioButton GroupName="OverrideOptions" Name="ReplaceBtn" Content="Copy and Replace All" Margin="5" FontSize="14"/>
+            <RadioButton GroupName="OverrideOptions" Name="NewBtn" Content="Copy New Only" Margin="5" FontSize="14"/>
+        </StackPanel>
+
+        <StackPanel x:Name="RunPanel" Grid.Row="2" Grid.Column="1">
+            <Button x:Name="StartBtn" Click="StartBtn_Click" Margin="20" FontSize="18" Padding="20, 10" HorizontalAlignment="Center">Start</Button>
+            <TextBlock x:Name="RunTimeLbl" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="ProgressLabel" HorizontalAlignment="Left"/>
+        </StackPanel>
+
+    </Grid>
+</Page>
