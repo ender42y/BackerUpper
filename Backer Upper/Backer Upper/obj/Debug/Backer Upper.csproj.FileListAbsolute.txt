@@ -56,3 +56,23 @@ D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.csp
 D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.csproj.CoreCompileInputs.cache
 D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.exe
 D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.pdb
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\bin\Debug\Backer Upper.exe.config
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\bin\Debug\Backer Upper.exe
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\bin\Debug\Backer Upper.pdb
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.csprojAssemblyReference.cache
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\MainWindow.g.cs
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Views\FilePicker.g.cs
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Views\MainPage.g.cs
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\App.g.cs
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper_MarkupCompile.cache
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper_MarkupCompile.lref
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\MainWindow.baml
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Views\FilePicker.baml
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Views\MainPage.baml
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.g.resources
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer_Upper.Properties.Resources.resources
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.csproj.GenerateResource.cache
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.csproj.CoreCompileInputs.cache
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.exe
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Debug\Backer Upper.pdb

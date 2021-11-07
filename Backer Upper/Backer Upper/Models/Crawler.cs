@@ -313,8 +313,12 @@ namespace Backer_Upper.Models
                                     FileCount++;
                                     if(FileTotals > volumeFree)
                                     {
-                                        Canceled = true;
-                                        MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                        if(Canceled != true)
+                                        {
+                                            Canceled = true;
+                                            MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                        }
+                                        return;
                                     }
                                 }
                             }
@@ -332,8 +336,12 @@ namespace Backer_Upper.Models
                                         FileCount++;
                                         if (FileTotals > volumeFree)
                                         {
-                                            Canceled = true;
-                                            MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                            if (Canceled != true)
+                                            {
+                                                Canceled = true;
+                                                MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                            }
+                                            return;
                                         }
                                     }
                                 }
@@ -356,8 +364,12 @@ namespace Backer_Upper.Models
                                 FileCount++;
                                 if (FileTotals > volumeFree)
                                 {
-                                    Canceled = true;
-                                    MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                    if (Canceled != true)
+                                    {
+                                        Canceled = true;
+                                        MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                    }
+                                    return;
                                 }
                             }
                             break;
@@ -376,8 +388,12 @@ namespace Backer_Upper.Models
                                     FileCount++;
                                     if (FileTotals > volumeFree)
                                     {
-                                        Canceled = true;
-                                        MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                        if (Canceled != true)
+                                        {
+                                            Canceled = true;
+                                            MessageBox.Show("Not enough space on target drive to finish transfer.", "Not Enough Space");
+                                        }
+                                        return;
                                     }
                                 }
                             }

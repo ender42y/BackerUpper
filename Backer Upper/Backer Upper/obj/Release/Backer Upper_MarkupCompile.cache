@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\obj\Release\
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\obj\Release\
 Backer_Upper
 none
 false
 TRACE
-D:\RedWing\Home\BackerUpper\Backer Upper\Backer Upper\App.xaml
+D:\RedWing\Backer Upper\Backer Upper\Backer Upper\App.xaml
 3-1130724381
 
 9-1216909695
 14-1290796308
 MainWindow.xaml;Views\FilePicker.xaml;Views\MainPage.xaml;
 
-False
+True
 
