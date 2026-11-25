@@ -1,51 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Win32;
 
-using System.Windows.Forms;
+namespace Backer_Upper.Views;
 
-namespace Backer_Upper.Views
+/// <summary>A folder path box with a Browse button. Also accepts a folder dragged from Explorer.</summary>
+public partial class FilePicker : UserControl
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class FilePicker : System.Windows.Controls.UserControl
+    public static readonly DependencyProperty SelectedPathProperty = DependencyProperty.Register(
+        nameof(SelectedPath), typeof(string), typeof(FilePicker),
+        new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    public FilePicker()
     {
+        InitializeComponent();
+    }
 
-        //private Microsoft.Win32.OpenFileDialog FileDialog;
-        private FolderBrowserDialog FolderBrowser;
+    public string SelectedPath
+    {
+        get => (string)GetValue(SelectedPathProperty);
+        set => SetValue(SelectedPathProperty, value);
+    }
 
-        public FilePicker()
-        {
-            //FileDialog = new Microsoft.Win32.OpenFileDialog();
+    /// <summary>Title shown on the folder browser dialog.</summary>
+    public string DialogTitle { get; set; } = "Select a folder";
 
-            FolderBrowser = new FolderBrowserDialog();
-            
-            InitializeComponent();
-        }
+    private void BrowseButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFolderDialog { Title = DialogTitle };
+        if (Directory.Exists(SelectedPath))
+            dialog.InitialDirectory = SelectedPath;
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
-        {
-            FolderBrowser.ShowNewFolderButton = true;
-            FolderBrowser.SelectedPath = "C:/";
-            DialogResult dialogResult = FolderBrowser.ShowDialog();
+        if (dialog.ShowDialog(Window.GetWindow(this)) == true)
+            SelectedPath = dialog.FolderName;
+    }
 
-            if(dialogResult == DialogResult.OK)
-            {
-                PathTextBox.Text = FolderBrowser.SelectedPath;
-            }
+    private static string? DroppedFolder(DragEventArgs e) =>
+        e.Data.GetData(DataFormats.FileDrop) is string[] { Length: 1 } paths && Directory.Exists(paths[0]) ? paths[0] : null;
 
-        }
+    private void PathTextBox_PreviewDragOver(object sender, DragEventArgs e)
+    {
+        e.Effects = DroppedFolder(e) is null ? DragDropEffects.None : DragDropEffects.Copy;
+        e.Handled = true;
+    }
+
+    private void PathTextBox_PreviewDrop(object sender, DragEventArgs e)
+    {
+        if (DroppedFolder(e) is string folder)
+            SelectedPath = folder;
+        e.Handled = true;
     }
 }
